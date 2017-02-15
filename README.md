@@ -1,4 +1,4 @@
-﻿AVPro With OpenCV for Unity Sample
+﻿AVPro With OpenCV for Unity Example
 ====================
 
 Screen Shot
@@ -14,7 +14,7 @@ UnityPlugin-AVProVideo-Latest-Trial 1.5.12
 
 Setup
 -----
-* Create New Project. (AVProWithOpenCVForUnitySample)
+* Create New Project. (AVProWithOpenCVForUnityExample)
 * Import OpenCVForUnity2.1.0 from AssetStore
 * Import UnityPlugin-AVProVideo-Latest-Trial.unitypackage
-* Import AVProWithOpenCVForUnitySample.unitypackage
+* Import AVProWithOpenCVForUnityExample.unitypackage

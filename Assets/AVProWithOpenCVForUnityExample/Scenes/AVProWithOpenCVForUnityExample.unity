@@ -417,7 +417,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: GetReadableTextureSample
+  m_Text: GetReadableTextureExample
 --- !u!222 &404420402
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -544,7 +544,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: ExtractFrameSample
+  m_Text: ExtractFrameExample
 --- !u!222 &992032545
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -748,7 +748,7 @@ GameObject:
   - 114: {fileID: 1292636402}
   - 114: {fileID: 1292636401}
   m_Layer: 5
-  m_Name: GetReadableTextureSampleButton
+  m_Name: GetReadableTextureExampleButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -830,7 +830,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1124998460}
-        m_MethodName: OnGetReadableTextureSample
+        m_MethodName: OnGetReadableTextureExample
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1309,7 +1309,7 @@ GameObject:
   - 114: {fileID: 1985475478}
   - 114: {fileID: 1985475477}
   m_Layer: 5
-  m_Name: ExtractFrameSampleButton
+  m_Name: ExtractFrameExampleButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1373,7 +1373,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1124998460}
-        m_MethodName: OnExtractFrameSample
+        m_MethodName: OnExtractFrameExample
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

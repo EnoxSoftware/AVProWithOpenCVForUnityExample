@@ -5,9 +5,9 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 #endif
 
-namespace AVProWithOpenCVForUnitySample
+namespace AVProWithOpenCVForUnityExample
 {
-    public class AVProWithOpenCVForUnitySample : MonoBehaviour
+    public class AVProWithOpenCVForUnityExample : MonoBehaviour
     {
 
         // Use this for initialization
@@ -31,21 +31,21 @@ namespace AVProWithOpenCVForUnitySample
 #endif
         }
 
-        public void OnGetReadableTextureSample ()
+        public void OnGetReadableTextureExample ()
         {
             #if UNITY_5_3 || UNITY_5_3_OR_NEWER
-            SceneManager.LoadScene ("GetReadableTextureSample");
+            SceneManager.LoadScene ("GetReadableTextureExample");
             #else
-            Application.LoadLevel ("GetReadableTextureSample");
+            Application.LoadLevel ("GetReadableTextureExample");
             #endif
         }
 
-        public void OnExtractFrameSample ()
+        public void OnExtractFrameExample ()
         {
             #if UNITY_5_3 || UNITY_5_3_OR_NEWER
-            SceneManager.LoadScene ("ExtractFrameSample");
+            SceneManager.LoadScene ("ExtractFrameExample");
             #else
-            Application.LoadLevel ("ExtractFrameSample");
+            Application.LoadLevel ("ExtractFrameExample");
             #endif
         }
     }

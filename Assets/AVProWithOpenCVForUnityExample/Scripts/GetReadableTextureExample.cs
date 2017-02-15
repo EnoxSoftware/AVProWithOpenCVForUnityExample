@@ -9,9 +9,9 @@ using UnityEngine.SceneManagement;
 using RenderHeads.Media.AVProVideo;
 using OpenCVForUnity;
 
-namespace AVProWithOpenCVForUnitySample
+namespace AVProWithOpenCVForUnityExample
 {
-    public class GetReadableTextureSample : MonoBehaviour
+    public class GetReadableTextureExample : MonoBehaviour
     {
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace AVProWithOpenCVForUnitySample
                 }
 
 
-                Imgproc.putText (rgbaMat, "AVPro With OpenCV for Unity Sample", new Point (50, rgbaMat.rows () / 2), Core.FONT_HERSHEY_SIMPLEX, 2.0, new Scalar (255, 0, 0, 255), 5, Imgproc.LINE_AA, false);
+                Imgproc.putText (rgbaMat, "AVPro With OpenCV for Unity Example", new Point (50, rgbaMat.rows () / 2), Core.FONT_HERSHEY_SIMPLEX, 2.0, new Scalar (255, 0, 0, 255), 5, Imgproc.LINE_AA, false);
                 Imgproc.putText (rgbaMat, "W:" + rgbaMat.width () + " H:" + rgbaMat.height () + " SO:" + Screen.orientation, new Point (5, rgbaMat.rows () - 10), Core.FONT_HERSHEY_SIMPLEX, 1.0, new Scalar (255, 255, 255, 255), 2, Imgproc.LINE_AA, false);
 
                 //Convert Mat to Texture2D
@@ -234,9 +234,9 @@ namespace AVProWithOpenCVForUnitySample
         public void OnBackButton ()
         {
             #if UNITY_5_3 || UNITY_5_3_OR_NEWER
-            SceneManager.LoadScene ("AVProWithOpenCVForUnitySample");
+            SceneManager.LoadScene ("AVProWithOpenCVForUnityExample");
             #else
-            Application.LoadLevel ("AVProWithOpenCVForUnitySample");
+            Application.LoadLevel ("AVProWithOpenCVForUnityExample");
             #endif
         }
 

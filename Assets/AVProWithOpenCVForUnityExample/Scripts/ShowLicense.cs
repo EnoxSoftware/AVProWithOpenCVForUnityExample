@@ -5,7 +5,7 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 #endif
 
-namespace AVProWithOpenCVForUnitySample
+namespace AVProWithOpenCVForUnityExample
 {
     public class ShowLicense : MonoBehaviour
     {
@@ -25,9 +25,9 @@ namespace AVProWithOpenCVForUnitySample
         public void OnBackButton ()
         {
             #if UNITY_5_3 || UNITY_5_3_OR_NEWER
-            SceneManager.LoadScene ("AVProWithOpenCVForUnitySample");
+            SceneManager.LoadScene ("AVProWithOpenCVForUnityExample");
             #else
-            Application.LoadLevel ("AVProWithOpenCVForUnitySample");
+            Application.LoadLevel ("AVProWithOpenCVForUnityExample");
 #endif
         }
     }
