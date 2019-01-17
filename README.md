@@ -15,6 +15,6 @@ Environment
 Setup
 -----
 * Create New Project. (AVProWithOpenCVForUnityExample)
-* Import OpenCVForUnity2.1.0 from AssetStore
+* Import OpenCVForUnity2.3.3 from AssetStore
 * Import UnityPlugin-AVProVideo-Latest-Trial.unitypackage
 * Import AVProWithOpenCVForUnityExample.unitypackage

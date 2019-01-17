@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using OpenCVForUnity.CoreModule;
+using OpenCVForUnity.ImgprocModule;
+using OpenCVForUnity.UnityUtils;
 
 #if UNITY_5_3 || UNITY_5_3_OR_NEWER
 using UnityEngine.SceneManagement;
@@ -128,7 +131,7 @@ namespace AVProWithOpenCVForUnityExample
 
                 //Convert AVPro's Texture to Texture2D
                 float timeSeconds = _frameIndex * _timeStepSeconds;
-                mediaPlayer.ExtractFrame(targetTexture, timeSeconds, _accurateSeek, _timeoutMs);
+                mediaPlayer.ExtractFrame (targetTexture, timeSeconds, _accurateSeek, _timeoutMs);
 
                 //Convert Texture2D to Mat
                 Utils.texture2DToMat (targetTexture, rgbaMat);
@@ -148,9 +151,9 @@ namespace AVProWithOpenCVForUnityExample
                 }
 
 
-                Imgproc.putText (rgbaMat, "AVPro With OpenCV for Unity Example", new Point (50, rgbaMat.rows () / 2), Core.FONT_HERSHEY_SIMPLEX, 2.0, new Scalar (255, 0, 0, 255), 5, Imgproc.LINE_AA, false);
-                Imgproc.putText (rgbaMat, "ExtractFrame: " + timeSeconds, new Point (50, rgbaMat.rows () / 2 + 60), Core.FONT_HERSHEY_SIMPLEX, 2.0, new Scalar (0, 0, 255, 255), 5, Imgproc.LINE_AA, false);
-                Imgproc.putText (rgbaMat, "W:" + rgbaMat.width () + " H:" + rgbaMat.height () + " SO:" + Screen.orientation, new Point (5, rgbaMat.rows () - 10), Core.FONT_HERSHEY_SIMPLEX, 1.0, new Scalar (255, 255, 255, 255), 2, Imgproc.LINE_AA, false);
+                Imgproc.putText (rgbaMat, "AVPro With OpenCV for Unity Example", new Point (50, rgbaMat.rows () / 2), Imgproc.FONT_HERSHEY_SIMPLEX, 2.0, new Scalar (255, 0, 0, 255), 5, Imgproc.LINE_AA, false);
+                Imgproc.putText (rgbaMat, "ExtractFrame: " + timeSeconds, new Point (50, rgbaMat.rows () / 2 + 60), Imgproc.FONT_HERSHEY_SIMPLEX, 2.0, new Scalar (0, 0, 255, 255), 5, Imgproc.LINE_AA, false);
+                Imgproc.putText (rgbaMat, "W:" + rgbaMat.width () + " H:" + rgbaMat.height () + " SO:" + Screen.orientation, new Point (5, rgbaMat.rows () - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 1.0, new Scalar (255, 255, 255, 255), 2, Imgproc.LINE_AA, false);
 
                 //Convert Mat to Texture2D
                 Utils.matToTexture2D (rgbaMat, texture, colors);
@@ -161,12 +164,12 @@ namespace AVProWithOpenCVForUnityExample
 
         // Callback function to handle events
         public void OnVideoEvent (MediaPlayer mp, MediaPlayerEvent.EventType et,
-                              ErrorCode errorCode)
+                                  ErrorCode errorCode)
         {
             switch (et) {
             case MediaPlayerEvent.EventType.ReadyToPlay:
                 mediaPlayer.Control.Play ();
-                mediaPlayer.Control.Pause();
+                mediaPlayer.Control.Pause ();
                 break;
             case MediaPlayerEvent.EventType.FirstFrameReady:
                 Debug.Log ("First frame ready");
@@ -210,8 +213,8 @@ namespace AVProWithOpenCVForUnityExample
             gameObject.GetComponent<Renderer> ().material.mainTexture = texture;
 
 
-            _timeStepSeconds = (mediaPlayer.Info.GetDurationMs() / 1000f) / (float)NumFrames;
-            _frameIndex = Random.Range(0,NumFrames);
+            _timeStepSeconds = (mediaPlayer.Info.GetDurationMs () / 1000f) / (float)NumFrames;
+            _frameIndex = Random.Range (0, NumFrames);
 
         }
 
