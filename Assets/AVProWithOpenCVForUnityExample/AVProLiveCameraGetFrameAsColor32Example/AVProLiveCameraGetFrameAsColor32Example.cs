@@ -1,6 +1,7 @@
+#if UNITY_STANDALONE_WIN
 using OpenCVForUnity.CoreModule;
 using OpenCVForUnity.ImgprocModule;
-using OpenCVForUnity.UnityUtils;
+using OpenCVForUnity.UnityIntegration;
 using RenderHeads.Media.AVProLiveCamera;
 using System.Runtime.InteropServices;
 using UnityEngine;
@@ -15,7 +16,42 @@ namespace AVProWithOpenCVForUnityExample
     /// </summary>
     public class AVProLiveCameraGetFrameAsColor32Example : MonoBehaviour
     {
-        public AVProLiveCamera _camera;
+        // Enums
+        public enum ModeType
+        {
+            original,
+            sepia,
+            pixelize,
+        }
+
+        // Public Fields
+        [Header("AVProLiveCamera")]
+        public AVProLiveCamera Camera;
+
+        [Header("Output")]
+        /// <summary>
+        /// The RawImage for previewing the result.
+        /// </summary>
+        public RawImage ResultPreview;
+
+        [Space(10)]
+
+        /// <summary>
+        /// The original mode toggle.
+        /// </summary>
+        public Toggle OriginalModeToggle;
+
+        /// <summary>
+        /// The sepia mode toggle.
+        /// </summary>
+        public Toggle SepiaModeToggle;
+
+        /// <summary>
+        /// The pixelize mode toggle.
+        /// </summary>
+        public Toggle PixelizeModeToggle;
+
+        // Private Fields
         private AVProLiveCameraDevice _device;
 
         private Color32[] _frameData;
@@ -28,97 +64,62 @@ namespace AVProWithOpenCVForUnityExample
         /// <summary>
         /// The texture.
         /// </summary>
-        Texture2D texture;
+        private Texture2D _texture;
 
         /// <summary>
         /// The rgba mat.
         /// </summary>
-        Mat rgbaMat;
+        private Mat _rgbaMat;
 
         /// <summary>
         /// The m sepia kernel.
         /// </summary>
-        Mat mSepiaKernel;
+        private Mat _mSepiaKernel;
 
         /// <summary>
         /// The m size0.
         /// </summary>
-        Size mSize0;
+        private Size _mSize0;
 
         /// <summary>
         /// The m intermediate mat.
         /// </summary>
-        Mat mIntermediateMat;
-
-        public enum modeType
-        {
-            original,
-            sepia,
-            pixelize,
-        }
+        private Mat _mIntermediateMat;
 
         /// <summary>
         /// The mode.
         /// </summary>
-        modeType mode;
+        private ModeType _mode;
 
-
-        /// <summary>
-        /// The original mode toggle.
-        /// </summary>
-        public Toggle originalModeToggle;
-
-
-        /// <summary>
-        /// The sepia mode toggle.
-        /// </summary>
-        public Toggle sepiaModeToggle;
-
-
-        /// <summary>
-        /// The pixelize mode toggle.
-        /// </summary>
-        public Toggle pixelizeModeToggle;
-
-        // Use this for initialization
-        void Start()
+        // Unity Lifecycle Methods
+        private void Start()
         {
-            if (originalModeToggle.isOn)
+            if (OriginalModeToggle.isOn)
             {
-                mode = modeType.original;
+                _mode = ModeType.original;
             }
-            if (sepiaModeToggle.isOn)
+            if (SepiaModeToggle.isOn)
             {
-                mode = modeType.sepia;
+                _mode = ModeType.sepia;
             }
-            if (pixelizeModeToggle.isOn)
+            if (PixelizeModeToggle.isOn)
             {
-                mode = modeType.pixelize;
+                _mode = ModeType.pixelize;
             }
 
-            // sepia
-            mSepiaKernel = new Mat(4, 4, CvType.CV_32F);
-            mSepiaKernel.put(0, 0, /* R */0.189f, 0.769f, 0.393f, 0f);
-            mSepiaKernel.put(1, 0, /* G */0.168f, 0.686f, 0.349f, 0f);
-            mSepiaKernel.put(2, 0, /* B */0.131f, 0.534f, 0.272f, 0f);
-            mSepiaKernel.put(3, 0, /* A */0.000f, 0.000f, 0.000f, 1f);
-
-
-            // pixelize
-            mIntermediateMat = new Mat();
-            mSize0 = new Size();
+            InitializeImageProcessingResources();
         }
 
-        void Update()
+        private void Update()
         {
-            if (_camera != null)
-                _device = _camera.Device;
+            if (Camera != null)
+                _device = Camera.Device;
 
             if (_device != null && _device.IsActive && !_device.IsPaused)
             {
                 if (_device.CurrentWidth != _frameWidth || _device.CurrentHeight != _frameHeight)
                 {
-                    CreateBuffer(_device.CurrentWidth, _device.CurrentHeight);
+                    InitializeTextureToMatConversionResources(_device.CurrentWidth, _device.CurrentHeight);
                 }
 
                 uint lastFrame = AVProLiveCameraPlugin.GetLastFrame(_device.DeviceIndex);
@@ -131,123 +132,47 @@ namespace AVProWithOpenCVForUnityExample
                 {
                     _lastFrame = lastFrame;
 
+                    // Get frame data as Color32 array using GetFrameAsColor32
+                    // Note: When AVProLiveCameraManager.SupportInternalFormatConversion = true,
+                    // GetFrameAsColor32() may fail to retrieve data or return incorrect data,
+                    // so it is recommended to set it to false.
                     bool result = AVProLiveCameraPlugin.GetFrameAsColor32(_device.DeviceIndex, _framePointer, _frameWidth, _frameHeight);
-                    
+
                     if (result)
                     {
-                        
-                        MatUtils.copyToMat<Color32>(_frameData, rgbaMat);
+                        OpenCVMatUtils.CopyToMat<Color32>(_frameData, _rgbaMat);
 
-                        
-                        if (mode == modeType.original)
+                        if (_mode == ModeType.original)
                         {
 
                         }
-                        else if (mode == modeType.sepia)
+                        else if (_mode == ModeType.sepia)
                         {
-
-                            Core.transform(rgbaMat, rgbaMat, mSepiaKernel);
-
+                            Core.transform(_rgbaMat, _rgbaMat, _mSepiaKernel);
                         }
-                        else if (mode == modeType.pixelize)
+                        else if (_mode == ModeType.pixelize)
                         {
-
-                            Imgproc.resize(rgbaMat, mIntermediateMat, mSize0, 0.1, 0.1, Imgproc.INTER_NEAREST);
-                            Imgproc.resize(mIntermediateMat, rgbaMat, rgbaMat.size(), 0.0, 0.0, Imgproc.INTER_NEAREST);
-
+                            Imgproc.resize(_rgbaMat, _mIntermediateMat, _mSize0, 0.1, 0.1, Imgproc.INTER_NEAREST);
+                            Imgproc.resize(_mIntermediateMat, _rgbaMat, _rgbaMat.size(), 0.0, 0.0, Imgproc.INTER_NEAREST);
                         }
-                        
 
-                        Imgproc.putText(rgbaMat, "AVPro With OpenCV for Unity Example", new Point(50, rgbaMat.rows() / 2), Imgproc.FONT_HERSHEY_SIMPLEX, 2.0, new Scalar(255, 0, 0, 255), 5, Imgproc.LINE_AA, false);
-                        Imgproc.putText(rgbaMat, "W:" + rgbaMat.width() + " H:" + rgbaMat.height() + " SO:" + Screen.orientation, new Point(5, rgbaMat.rows() - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 1.0, new Scalar(255, 255, 255, 255), 2, Imgproc.LINE_AA, false);
+                        Imgproc.putText(_rgbaMat, "AVPro With OpenCV for Unity Example", new Point(50, _rgbaMat.rows() / 2), Imgproc.FONT_HERSHEY_SIMPLEX, 2.0, new Scalar(255, 0, 0, 255), 5, Imgproc.LINE_AA, false);
+                        Imgproc.putText(_rgbaMat, "W:" + _rgbaMat.width() + " H:" + _rgbaMat.height() + " SO:" + Screen.orientation, new Point(5, _rgbaMat.rows() - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 1.0, new Scalar(255, 255, 255, 255), 2, Imgproc.LINE_AA, false);
 
                         //Convert Mat to Texture2D
-                        Utils.matToTexture2D(rgbaMat, texture);
-                        
+                        OpenCVMatUtils.MatToTexture2D(_rgbaMat, _texture);
                     }
                 }
             }
         }
 
-        private void CreateBuffer(int width, int height)
+        private void OnDestroy()
         {
-            // Free buffer if it's diffarent size
-            if (_frameHandle.IsAllocated && _frameData != null)
-            {
-                if (_frameData.Length != width * height)
-                {
-                    FreeBuffer();
-                }
-            }
-
-            if (_frameData == null)
-            {
-                _frameWidth = width;
-                _frameHeight = height;
-                _frameData = new Color32[_frameWidth * _frameHeight];
-                _frameHandle = GCHandle.Alloc(_frameData, GCHandleType.Pinned);
-                _framePointer = _frameHandle.AddrOfPinnedObject();
-
-                texture = new Texture2D(_frameWidth, _frameHeight, TextureFormat.RGBA32, false, false);
-
-                rgbaMat = new Mat(texture.height, texture.width, CvType.CV_8UC4);
-
-                
-                gameObject.GetComponent<Renderer>().material.mainTexture = texture;
-
-                gameObject.transform.localScale = new Vector3(texture.width, texture.height, 1);
-                Debug.Log("Screen.width " + Screen.width + " Screen.height " + Screen.height + " Screen.orientation " + Screen.orientation);
-
-                float widthScale = (float)Screen.width / width;
-                float heightScale = (float)Screen.height / height;
-                if (widthScale < heightScale)
-                {
-                    Camera.main.orthographicSize = (width * (float)Screen.height / (float)Screen.width) / 2;
-                }
-                else
-                {
-                    Camera.main.orthographicSize = height / 2;
-                }
-                
-            }
+            DisposeTextureToMatConversionResources();
+            DisposeImageProcessingResources();
         }
 
-        private void FreeBuffer()
-        {
-            if (_frameHandle.IsAllocated)
-            {
-                _framePointer = System.IntPtr.Zero;
-                _frameHandle.Free();
-                _frameData = null;
-            }
-
-            if (texture)
-            {
-                Texture2D.DestroyImmediate(texture);
-                texture = null;
-            }
-
-            if (rgbaMat != null)
-                rgbaMat.Dispose();
-        }
-
-        void OnDestroy()
-        {
-            FreeBuffer();
-
-            if (mSepiaKernel != null)
-            {
-                mSepiaKernel.Dispose();
-                mSepiaKernel = null;
-            }
-
-            if (mIntermediateMat != null)
-            {
-                mIntermediateMat.Dispose();
-                mIntermediateMat = null;
-            }
-        }
-
+        // Public Methods
         /// <summary>
         /// Raises the back button event.
         /// </summary>
@@ -261,10 +186,9 @@ namespace AVProWithOpenCVForUnityExample
         /// </summary>
         public void OnOriginalModeToggle()
         {
-
-            if (originalModeToggle.isOn)
+            if (OriginalModeToggle.isOn)
             {
-                mode = modeType.original;
+                _mode = ModeType.original;
             }
         }
 
@@ -273,10 +197,9 @@ namespace AVProWithOpenCVForUnityExample
         /// </summary>
         public void OnSepiaModeToggle()
         {
-
-            if (sepiaModeToggle.isOn)
+            if (SepiaModeToggle.isOn)
             {
-                mode = modeType.sepia;
+                _mode = ModeType.sepia;
             }
         }
 
@@ -285,11 +208,92 @@ namespace AVProWithOpenCVForUnityExample
         /// </summary>
         public void OnPixelizeModeToggle()
         {
-
-            if (pixelizeModeToggle.isOn)
+            if (PixelizeModeToggle.isOn)
             {
-                mode = modeType.pixelize;
+                _mode = ModeType.pixelize;
             }
+        }
+
+        /// <summary>
+        /// Initializes the image processing resources (sepia kernel, intermediate mat, size).
+        /// </summary>
+        private void InitializeImageProcessingResources()
+        {
+            // sepia
+            _mSepiaKernel = new Mat(4, 4, CvType.CV_32F);
+            _mSepiaKernel.put(0, 0, /* R */0.189f, 0.769f, 0.393f, 0f);
+            _mSepiaKernel.put(1, 0, /* G */0.168f, 0.686f, 0.349f, 0f);
+            _mSepiaKernel.put(2, 0, /* B */0.131f, 0.534f, 0.272f, 0f);
+            _mSepiaKernel.put(3, 0, /* A */0.000f, 0.000f, 0.000f, 1f);
+
+            // pixelize
+            _mIntermediateMat = new Mat();
+            _mSize0 = new Size();
+        }
+
+        /// <summary>
+        /// Disposes the image processing resources (sepia kernel, intermediate mat, size).
+        /// </summary>
+        private void DisposeImageProcessingResources()
+        {
+            _mSepiaKernel?.Dispose(); _mSepiaKernel = null;
+            _mIntermediateMat?.Dispose(); _mIntermediateMat = null;
+            _mSize0 = null;
+        }
+
+        // Private Methods
+        /// <summary>
+        /// Initializes the textures and mat used for texture to Mat conversion.
+        /// </summary>
+        private void InitializeTextureToMatConversionResources(int width, int height)
+        {
+            // Free buffer if it's diffarent size
+            if (_frameHandle.IsAllocated && _frameData != null)
+            {
+                if (_frameData.Length != width * height)
+                {
+                    DisposeTextureToMatConversionResources();
+                }
+            }
+
+            if (_frameData == null)
+            {
+                _frameWidth = width;
+                _frameHeight = height;
+                _frameData = new Color32[_frameWidth * _frameHeight];
+                _frameHandle = GCHandle.Alloc(_frameData, GCHandleType.Pinned);
+                _framePointer = _frameHandle.AddrOfPinnedObject();
+
+                _texture = new Texture2D(_frameWidth, _frameHeight, TextureFormat.RGBA32, false, false);
+
+                _rgbaMat = new Mat(_texture.height, _texture.width, CvType.CV_8UC4);
+
+                // Set the Texture2D as the texture of the RawImage for preview.
+                ResultPreview.texture = _texture;
+                ResultPreview.GetComponent<AspectRatioFitter>().aspectRatio = (float)_texture.width / _texture.height;
+            }
+        }
+
+        /// <summary>
+        /// Disposes the textures and mat used for texture to Mat conversion.
+        /// </summary>
+        private void DisposeTextureToMatConversionResources()
+        {
+            if (_frameHandle.IsAllocated)
+            {
+                _framePointer = System.IntPtr.Zero;
+                _frameHandle.Free();
+                _frameData = null;
+            }
+
+            if (_texture)
+            {
+                Texture2D.Destroy(_texture);
+                _texture = null;
+            }
+
+            _rgbaMat?.Dispose(); _rgbaMat = null;
         }
     }
 }
+#endif

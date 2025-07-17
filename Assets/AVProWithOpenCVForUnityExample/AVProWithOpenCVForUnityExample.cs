@@ -1,4 +1,5 @@
 using System.Collections;
+using OpenCVForUnity.UnityIntegration;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -7,61 +8,64 @@ namespace AVProWithOpenCVForUnityExample
 {
     public class AVProWithOpenCVForUnityExample : MonoBehaviour
     {
+        // Constants
+        private static float VERTICAL_NORMALIZED_POSITION = 1f;
 
+        // Public Fields
         [Header("UI")]
-        public Text exampleTitle;
-        public Text versionInfo;
-        public ScrollRect scrollRect;
-        private static float verticalNormalizedPosition = 1f;
+        public Text ExampleTitle;
+        public Text VersionInfo;
+        public ScrollRect ScrollRect;
 
-        void Awake()
+        // Unity Lifecycle Methods
+
+        private void Start()
         {
-            //QualitySettings.vSyncCount = 0;
-            //Application.targetFrameRate = 60;
-        }
+            ExampleTitle.text = "AVProWithOpenCVForUnity Example " + Application.version;
 
-        IEnumerator Start()
-        {
-
-            exampleTitle.text = "AVProWithOpenCVForUnity Example " + Application.version;
-
-            versionInfo.text = OpenCVForUnity.CoreModule.Core.NATIVE_LIBRARY_NAME + " " + OpenCVForUnity.UnityUtils.Utils.getVersion() + " (" + OpenCVForUnity.CoreModule.Core.VERSION + ")";
-            versionInfo.text += " / UnityEditor " + Application.unityVersion;
-            versionInfo.text += " / ";
+            VersionInfo.text = OpenCVForUnity.CoreModule.Core.NATIVE_LIBRARY_NAME + " " + OpenCVEnv.GetVersion() + " (" + OpenCVForUnity.CoreModule.Core.VERSION + ")";
+            VersionInfo.text += " / UnityEditor " + Application.unityVersion;
+            VersionInfo.text += " / ";
 #if UNITY_EDITOR
-            versionInfo.text += "Editor";
+            VersionInfo.text += "Editor";
 #elif UNITY_STANDALONE_WIN
-            versionInfo.text += "Windows";
+            VersionInfo.text += "Windows";
 #elif UNITY_STANDALONE_OSX
-            versionInfo.text += "Mac OSX";
+            VersionInfo.text += "Mac OSX";
 #elif UNITY_STANDALONE_LINUX
-            versionInfo.text += "Linux";
+            VersionInfo.text += "Linux";
 #elif UNITY_ANDROID
-            versionInfo.text += "Android";
+            VersionInfo.text += "Android";
 #elif UNITY_IOS
-            versionInfo.text += "iOS";
+            VersionInfo.text += "iOS";
+#elif UNITY_VISIONOS
+            VersionInfo.text += "VisionOS";
 #elif UNITY_WSA
-            versionInfo.text += "WSA";
+            VersionInfo.text += "WSA";
 #elif UNITY_WEBGL
-            versionInfo.text += "WebGL";
+            VersionInfo.text += "WebGL";
 #endif
-            versionInfo.text += " ";
+            VersionInfo.text += " ";
 #if ENABLE_MONO
-            versionInfo.text += "Mono";
+            VersionInfo.text += "Mono";
 #elif ENABLE_IL2CPP
-            versionInfo.text += "IL2CPP";
+            VersionInfo.text += "IL2CPP";
 #elif ENABLE_DOTNET
-            versionInfo.text += ".NET";
+            VersionInfo.text += ".NET";
 #endif
 
-            scrollRect.verticalNormalizedPosition = verticalNormalizedPosition;
+            ScrollRect.verticalNormalizedPosition = VERTICAL_NORMALIZED_POSITION;
 
-            yield break;
+            #if !UNITY_STANDALONE_WIN
+            GameObject.Find("Canvas/Panel/SceneList/ScrollView/List/AVProLiveCameraGetFrameAsColor32ExampleButton").GetComponent<Button>().interactable = false;
+            GameObject.Find("Canvas/Panel/SceneList/ScrollView/List/AVProLiveCameraAsyncGPUReadback2MatHelperExampleButton").GetComponent<Button>().interactable = false;
+            #endif
         }
 
+        // Public Methods
         public void OnScrollRectValueChanged()
         {
-            verticalNormalizedPosition = scrollRect.verticalNormalizedPosition;
+            VERTICAL_NORMALIZED_POSITION = ScrollRect.verticalNormalizedPosition;
         }
 
         public void OnShowLicenseButton()
@@ -74,9 +78,9 @@ namespace AVProWithOpenCVForUnityExample
             SceneManager.LoadScene("AVProVideoGetReadableTextureExample");
         }
 
-        public void OnAVProVideoAsyncGPUReadbackExampleButton()
+        public void OnAVProVideoAsyncGPUReadback2MatHelperExampleButton()
         {
-            SceneManager.LoadScene("AVProVideoAsyncGPUReadbackExample");
+            SceneManager.LoadScene("AVProVideoAsyncGPUReadback2MatHelperExample");
         }
 
         public void OnAVProVideoExtractFrameExampleButton()
@@ -89,9 +93,9 @@ namespace AVProWithOpenCVForUnityExample
             SceneManager.LoadScene("AVProLiveCameraGetFrameAsColor32Example");
         }
 
-        public void OnAVProLiveCameraAsyncGPUReadbackExampleButton()
+        public void OnAVProLiveCameraAsyncGPUReadback2MatHelperExampleButton()
         {
-            SceneManager.LoadScene("AVProLiveCameraAsyncGPUReadbackExample");
+            SceneManager.LoadScene("AVProLiveCameraAsyncGPUReadback2MatHelperExample");
         }
     }
 }
