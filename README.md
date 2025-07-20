@@ -23,8 +23,8 @@ Setup
 1. Download the latest release unitypackage. [AVProWithOpenCVForUnityExample.unitypackage](https://github.com/EnoxSoftware/AVProWithOpenCVForUnityExample/releases)
 1. Create New Project. (AVProWithOpenCVForUnityExample)
 1. Import OpenCVForUnity from AssetStore
-1. Import UnityPlugin-AVProVideo-Latest-Trial.unitypackage
-1. Import UnityPlugin-AVProLiveCamera-Latest-Trial.unitypackage
+1. Import UnityPlugin-AVProVideo-vX.X.X-Trial.unitypackage
+1. Import UnityPlugin-AVProLiveCamera-vX.X.X-Trial.unitypackage
 1. Import AVProWithOpenCVForUnityExample.unitypackage
 1. Add the "Assets/AVProWithOpenCVForUnityExample/*.unity" files to the "Scenes In Build" list in the "Build Settings" window.
 1. Build and Deploy.
