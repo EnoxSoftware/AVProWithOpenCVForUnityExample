@@ -1,5 +1,6 @@
 #if UNITY_STANDALONE_WIN
 using OpenCVForUnity.CoreModule;
+using OpenCVForUnity.Extensions;
 using OpenCVForUnity.ImgprocModule;
 using OpenCVForUnity.UnityIntegration;
 using RenderHeads.Media.AVProLiveCamera;
@@ -140,7 +141,7 @@ namespace AVProWithOpenCVForUnityExample
 
                     if (result)
                     {
-                        OpenCVMatUtils.CopyToMat<Color32>(_frameData, _rgbaMat);
+                        MatBufferUtils.CopyToMat<Color32>(_frameData, _rgbaMat);
 
                         if (_mode == ModeType.original)
                         {
@@ -160,7 +161,7 @@ namespace AVProWithOpenCVForUnityExample
                         Imgproc.putText(_rgbaMat, "W:" + _rgbaMat.width() + " H:" + _rgbaMat.height() + " SO:" + Screen.orientation, new Point(5, _rgbaMat.rows() - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 1.0, new Scalar(255, 255, 255, 255), 2, Imgproc.LINE_AA, false);
 
                         //Convert Mat to Texture2D
-                        OpenCVMatUtils.MatToTexture2D(_rgbaMat, _texture);
+                        OpenCVMatUnityUtils.MatToTexture2D(_rgbaMat, _texture);
                     }
                 }
             }

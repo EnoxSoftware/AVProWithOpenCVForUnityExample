@@ -1,34 +1,34 @@
-﻿AVPro With OpenCV for Unity Example
-====================
+﻿# AVPro With OpenCV for Unity Example
 
-Overview
------
-This example shows how to convert AVProVideo and AVProLiveCamera texture to OpenCV Mat using AsyncGPUReadback.
-- AVProVideoGetReadableTextureExample
-- AVProVideoAsyncGPUReadback2MatHelperExample
-- AVProVideoExtractFrameExample
-- AVProLiveCameraGetFrameAsColor32Example
-- AVProLiveCameraAsyncGPUReadback2MatHelperExample
+## Overview
 
-Environment
------
-- Unity 2021.3.35f1+
-- [OpenCVForUnity](https://assetstore.unity.com/packages/tools/integration/opencv-for-unity-21088?aid=1011l4ehR) 3.0.0+
-- [UnityPlugin-AVProVideo](https://assetstore.unity.com/packages/tools/video/avpro-video-v3-core-desktop-edition-278895?aid=1011l4ehR) 3.2.7+ (Latest-Trial)
-- [UnityPlugin-AVProLiveCamera](https://assetstore.unity.com/packages/tools/video/avpro-live-camera-3683?aid=1011l4ehR) 2.9.3+ (Latest-Trial)
+- Integrate **[AVPro Video](https://assetstore.unity.com/packages/tools/video/avpro-video-v3-core-desktop-edition-278895?aid=1011l4ehR)** and **[AVPro Live Camera](https://assetstore.unity.com/packages/tools/video/avpro-live-camera-3683?aid=1011l4ehR)** with **[OpenCV for Unity](https://assetstore.unity.com/packages/tools/integration/opencv-for-unity-21088?aid=1011l4ehR)**.
+- Convert **AVPro Video** and **AVPro Live Camera** textures to **OpenCV**'s `Mat` class using `AsyncGPUReadback`.
+- Example scenes:
+  - `AVProVideoGetReadableTextureExample`
+  - `AVProVideoAsyncGPUReadbackToMatHelperExample`
+  - `AVProVideoExtractFrameExample`
+  - `AVProLiveCameraGetFrameAsColor32Example`
+  - `AVProLiveCameraAsyncGPUReadbackToMatHelperExample`
 
+## Environment
 
-Setup
------
-1. Download the latest release unitypackage. [AVProWithOpenCVForUnityExample.unitypackage](https://github.com/EnoxSoftware/AVProWithOpenCVForUnityExample/releases)
-1. Create New Project. (AVProWithOpenCVForUnityExample)
-1. Import OpenCVForUnity from AssetStore
-1. Import UnityPlugin-AVProVideo-vX.X.X-Trial.unitypackage
-1. Import UnityPlugin-AVProLiveCamera-vX.X.X-Trial.unitypackage
-1. Import AVProWithOpenCVForUnityExample.unitypackage
-1. Add the "Assets/AVProWithOpenCVForUnityExample/*.unity" files to the "Scenes In Build" list in the "Build Settings" window.
-1. Build and Deploy.
+- **Unity 2022.3.62f3+**
+- [OpenCV for Unity](https://assetstore.unity.com/packages/tools/integration/opencv-for-unity-21088?aid=1011l4ehR) **3.0.4+**
+- [UnityPlugin-AVProVideo](https://assetstore.unity.com/packages/tools/video/avpro-video-v3-core-desktop-edition-278895?aid=1011l4ehR) **3.4.2+** *(Latest-Trial)*
+- [UnityPlugin-AVProLiveCamera](https://assetstore.unity.com/packages/tools/video/avpro-live-camera-3683?aid=1011l4ehR) **2.9.3+** *(Latest-Trial)*
 
-Screen Shot
------
-![ScreenShot.PNG](ScreenShot.PNG)
+## Setup
+
+1. Download the latest release unitypackage from [AVProWithOpenCVForUnityExample.unitypackage](https://github.com/EnoxSoftware/AVProWithOpenCVForUnityExample/releases).
+2. Create a new project. *(ex. AVProWithOpenCVForUnityExample)*
+3. Import [OpenCV for Unity](https://assetstore.unity.com/packages/tools/integration/opencv-for-unity-21088?aid=1011l4ehR) from the Asset Store.
+4. Import `UnityPlugin-AVProVideo-vX.X.X-Trial.unitypackage`.
+5. Import `UnityPlugin-AVProLiveCamera-vX.X.X-Trial.unitypackage`.
+6. Import [AVProWithOpenCVForUnityExample.unitypackage](https://github.com/EnoxSoftware/AVProWithOpenCVForUnityExample/releases).
+7. Add all of the `***.unity` files in the `AVProWithOpenCVForUnityExample` folder to `Build Settings` → `Scenes In Build`.
+8. Build and Deploy.
+
+## ScreenShot
+
+![screenshot.png](images/screenshot.png)

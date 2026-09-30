@@ -23,7 +23,7 @@ namespace AVProWithOpenCVForUnityExample
         {
             ExampleTitle.text = "AVProWithOpenCVForUnity Example " + Application.version;
 
-            VersionInfo.text = OpenCVForUnity.CoreModule.Core.NATIVE_LIBRARY_NAME + " " + OpenCVEnv.GetVersion() + " (" + OpenCVForUnity.CoreModule.Core.VERSION + ")";
+            VersionInfo.text = OpenCVForUnity.CoreModule.Core.NATIVE_LIBRARY_NAME + " " + OpenCVForUnityEnv.GetVersion() + " (" + OpenCVForUnity.CoreModule.Core.VERSION + ")";
             VersionInfo.text += " / UnityEditor " + Application.unityVersion;
             VersionInfo.text += " / ";
 #if UNITY_EDITOR
@@ -58,7 +58,7 @@ namespace AVProWithOpenCVForUnityExample
 
             #if !UNITY_STANDALONE_WIN
             GameObject.Find("Canvas/Panel/SceneList/ScrollView/List/AVProLiveCameraGetFrameAsColor32ExampleButton").GetComponent<Button>().interactable = false;
-            GameObject.Find("Canvas/Panel/SceneList/ScrollView/List/AVProLiveCameraAsyncGPUReadback2MatHelperExampleButton").GetComponent<Button>().interactable = false;
+            GameObject.Find("Canvas/Panel/SceneList/ScrollView/List/AVProLiveCameraAsyncGPUReadbackToMatHelperExampleButton").GetComponent<Button>().interactable = false;
             #endif
         }
 
@@ -78,9 +78,9 @@ namespace AVProWithOpenCVForUnityExample
             SceneManager.LoadScene("AVProVideoGetReadableTextureExample");
         }
 
-        public void OnAVProVideoAsyncGPUReadback2MatHelperExampleButton()
+        public void OnAVProVideoAsyncGPUReadbackToMatHelperExampleButton()
         {
-            SceneManager.LoadScene("AVProVideoAsyncGPUReadback2MatHelperExample");
+            SceneManager.LoadScene("AVProVideoAsyncGPUReadbackToMatHelperExample");
         }
 
         public void OnAVProVideoExtractFrameExampleButton()
@@ -93,9 +93,9 @@ namespace AVProWithOpenCVForUnityExample
             SceneManager.LoadScene("AVProLiveCameraGetFrameAsColor32Example");
         }
 
-        public void OnAVProLiveCameraAsyncGPUReadback2MatHelperExampleButton()
+        public void OnAVProLiveCameraAsyncGPUReadbackToMatHelperExampleButton()
         {
-            SceneManager.LoadScene("AVProLiveCameraAsyncGPUReadback2MatHelperExample");
+            SceneManager.LoadScene("AVProLiveCameraAsyncGPUReadbackToMatHelperExample");
         }
     }
 }

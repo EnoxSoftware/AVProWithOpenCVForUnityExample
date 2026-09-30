@@ -133,7 +133,7 @@ namespace AVProWithOpenCVForUnityExample
                     Helper.GetReadableTexture(MediaPlayer.TextureProducer.GetTexture(), MediaPlayer.TextureProducer.RequiresVerticalFlip(), Helper.GetOrientation(MediaPlayer.Info.GetTextureTransform()), _sourceTexture);
 
                     //Convert Texture2D to Mat
-                    OpenCVMatUtils.Texture2DToMat(_sourceTexture, _rgbaMat);
+                    OpenCVMatUnityUtils.Texture2DToMat(_sourceTexture, _rgbaMat);
 
                     if (_mode == ModeType.original)
                     {
@@ -153,7 +153,7 @@ namespace AVProWithOpenCVForUnityExample
                     Imgproc.putText(_rgbaMat, "W:" + _rgbaMat.width() + " H:" + _rgbaMat.height() + " SO:" + Screen.orientation, new Point(5, _rgbaMat.rows() - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 1.0, new Scalar(255, 255, 255, 255), 2, Imgproc.LINE_AA, false);
 
                     //Convert Mat to Texture2D
-                    OpenCVMatUtils.MatToTexture2D(_rgbaMat, _outputTexture);
+                    OpenCVMatUnityUtils.MatToTexture2D(_rgbaMat, _outputTexture);
                 }
             }
         }
